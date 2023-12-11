@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>spotify sign up</title>
+    <link rel="stylesheet" href="style.css">
+    
+    
+  </head>
+  <body>
+    <div class="head-style">
+      <img src="logo.png" id="s" >
+    </div>
+    <br><br><br><br><br>
+    <div class="center">
+      <p class="cont">Sign up for free to start listening.</p>
+      <a href="#">continue with fb</a>
+      <a href="#">continue with google</a> 
+     
+     
+    </div>
+    <div class="center">
+      <form action="s_up.php" method="post">
+        <div class="input-grid">
+          <label for="fname" class="form-lebel">Enter your full name</label>
+          <input type="text" id="fname" name="fname" class="input" placeholder="FULL NAME "/>
+          <label for="email" class="form-lebel">What's your email</label>
+          <input type="text" class="input" id="email" name="email" placeholder="Email address "/>
+          <label  for="pass" class="form-lebel">Create your password</label>
+          <input type="password" class="input" id="pass" name="pass"  placeholder="enter password" />
+          <label  for="password" class="form-lebel">Confirm your password</label>
+          <input type="password" class="input" id="password" name="password" placeholder="confirm password" /> 
+          <!--<label for="DOB" class="form-lebel">what's your date of birth</label>
+  <input type="date" class="input" id="DOB" name="DOB"> -->
+
+         <label for="username" class="form-lebel">Set your username</label>
+          <input type="text" id="username" name="username" class="input" placeholder="username "/>
+        </div>   
+<div class="form-down">
+  <div class="for-check">
+    <p>Have an account,<a href="login.php"><span style="color: red;"  >Log in</span></a></p>
+  </div>
+  <input type="submit" value="signup" name="submit">
+  <!-- <button>sign in</button><br> -->
+      </form>
+    </div>
+
+  </body>
+</html>
+
+<?php
+
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "loginform";
+
+// Create connection
+$conn = mysqli_connect($servername, $username,$password,$dbname);
+if (!$conn) {
+  die("Connection failed: " . mysqli_connect_error());
+}
+session_start();
+// $fname = mysqli_real_escape_string($conn,$_POST['fname']);
+// $username = mysqli_real_escape_string($conn,$_POST['username']);
+// $email=mysqli_real_escape_string($conn,$_POST["email"]);
+// $password = mysqli_real_escape_string($conn,$_POST['password']);
+// $pass = mysqli_real_escape_string($conn,$_POST['pass']);
+$fname=$_POST["fname"];
+$email=$_POST["email"];
+$pass=$_POST["pass"];
+$password=$_POST["password"];
+$username=$_POST["username"];
+$select = " SELECT * FROM userlogin WHERE email = '$email' && password = '$password'";
+$result = mysqli_query($conn, $select);
+
+   if(mysqli_num_rows($result) > 0){
+      $error[] = 'user already exist';
+   }else{
+      if($password != $pass){
+         $error[] = 'password not mathched!';
+
+      }
+    
+      else{
+// if($pass == $password) 
+//
+      
+$sql="INSERT INTO userlogin( `fname`, `email`, `pass`, `password`,`username`,`DOA`) VALUES ('$fname','$email','$pass','$password','$username',current_timestamp())";
+$sresult= mysqli_query($conn,$sql);
+if ($sresult){
+  $showAlert = true;
+  header('location:login.php');
+  // echo"New record created successfully";
+       
+      
+// else
+//   $showError = "Passwords do not match";
+//
+
+      
+}
+      }
+    }
+  
+?>

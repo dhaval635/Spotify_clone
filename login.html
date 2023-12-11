@@ -1,0 +1,77 @@
+<?php
+
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "loginform";
+
+// Create connection
+$conn = mysqli_connect($servername, $username,$password,$dbname);
+if (!$conn) {
+  die("Connection failed: " . mysqli_connect_error());
+}
+session_start();
+
+if(isset($_POST['submit'])){
+    
+   $email = mysqli_real_escape_string($conn, $_POST['email']);
+   $pass = mysqli_real_escape_string($conn,$_POST['password']);
+
+   $select = " SELECT * FROM userlogin WHERE email = '$email' && password = '$pass'";
+
+   $result = mysqli_query($conn, $select);
+   
+   if(mysqli_num_rows($result) > 0){
+   
+     $_SESSION['email'] = $email;
+     header('location:homepage.php');
+ }else{
+    $error[] = 'incorrect password or email.';
+ }
+}
+?>
+
+
+<!DOCTYPE html>
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>spotify login</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="head-style">
+      <img src="logo.png" id="l"> 
+    </div>
+    <br><br><br><br><br>
+    <div class="center">
+      <p class="cont">To  continue, log in to spotify.</p>
+      <a href="#">continue with fb</a>
+      <a href="#">continue with google</a> 
+      <a href="s_up.php">Don't have account,create now</a>
+     
+    </div>
+    <div class="center">
+      <form action="" method="post">
+        <div class="input-grid">
+          <label for="email" class="form-lebel">Email address or username</label>
+          <input type="email" class="input" id="email" name="email" placeholder="Email address or username"/>
+          <label  for="pass" class="form-lebel">Password</label>
+          <input type="password" class="input" name="password" id="pass"  placeholder="enter password" />
+        </div>
+<div class="form-down">
+  <div class="for-check">
+    <p>forgot password</p>
+  </div>
+  <input type="submit" value="login now" class="form-btn" name="submit"><br><br>
+  <!-- <button id="submit">sign in</button><br> -->
+  <!-- <input type="button" href="s_up.php"value="create now" class="form-btn" name="s_up"> -->
+  <!-- <a href="s_up.php">create one</a> -->
+</div>
+      </form>
+    </div>
+  </body>
+</html>
